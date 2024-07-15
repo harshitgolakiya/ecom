@@ -35,7 +35,7 @@
                 'action': 'POST'
             },
             success: function(json) {
-                console.log(json);
+                document.getElementById('cart-counter').textContent = json.qty;
             },
             error: function(xhr, errmsg, err) {
                 console.log(errmsg);

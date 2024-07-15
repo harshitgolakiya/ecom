@@ -1,3 +1,5 @@
+
+from store.models import product  # Use lowercase 'product' to match the model name
 # cart.py
 
 class Cart():
@@ -16,3 +18,10 @@ class Cart():
 
     def __len__(self):
         return len(self.cart)
+    
+    def get_prod(self):
+        product_ids = self.cart.keys()
+        products = product.objects.filter(id__in=product_ids)
+        return products
+
+

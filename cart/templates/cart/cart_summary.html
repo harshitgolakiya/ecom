@@ -10,6 +10,81 @@
             </div>
         </div>
     </header>
+    <div class="container mt-5">
+            {% if carts %}
+                    <h2 class="text-center">Shopping Cart</h2>
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <table class="table table-hover">
+                                <thead class="table-dark">
+                                <tr>
+                                    <th scope="col">Product</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Price</th>
+                                    <th scope="col">Quantity</th>
+                                    <th scope="col">Total</th>
+                                    <th scope="col">Remove</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for cart in carts %}
+                                <!-- Example Item -->
+                                <tr>
+                                    <td class="cartimg"><img src="{{cart.image.url}}" class="w-25 h-25 "  alt="Product Image"></td>
+                                    <td>{{cart.name}}</td>
+                                    <td>
+                                        <span id="cartvalue">
+                                            {% if cart.is_sale %}
+                                            {{cart.sale_price}} 
+                                            {% else %}
+                                            {{cart.price}} 
+                                            {% endif %}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control" value="1" min="1" id="quantity">
+                                    </td>
+                                    <td id="total">  </td>
+                                    <td>
+                                        <button class="btn btn-danger btn-sm" id="remove">Remove</button>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                                <!-- Repeat for more items -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    Order Summary
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">Subtotal: $10.00</h5>
+                                    <p class="card-text">Shipping: $5.00</p>
+                                    <h5 class="card-title">Total: $15.00</h5>
+                                    <a href="#" class="btn btn-primary">Proceed to Checkout</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            {% else %}
+                    <div class="card">
+                        <div class="card-header">
+                            Cart is Empty
+                        </div>
+                    </div>
+            {% endif %}
+    </div>
 </div>
+<script>
+    document.getElementById('total').textContent = document.getElementById('quantity').value * document.getElementById('cartvalue').textContent
+    document.querySelector('#quantity').onchange = function() {
+        const quantity = document.getElementById('quantity').value;
+        const cartValue = parseFloat(document.getElementById('cartvalue').textContent);
+        document.getElementById('total').textContent = quantity * cartValue;
+    }
+   
 
+</script>
 {% endblock %}  
