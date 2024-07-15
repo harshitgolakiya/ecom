@@ -1,0 +1,46 @@
+<!-- product_info.html -->
+{% extends "index.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-5">
+            <img src="{{ pinfo.image.url }}" class="img-fluid" alt="Jura E8 Coffee Machine">
+        </div>
+        <div class="col-md-7">
+            <h3>{{ pinfo.description }}</h3>
+            {% if pinfo.is_sale %}
+            <div class="d-flex">
+                <span class="text-decoration-line-through text-muted me-2">${{ pinfo.price }}</span>
+                <span class="text-danger fw-bold">${{ pinfo.sale_price }}</span>
+            </div>
+            {% else %}
+            <p class="text-danger"><strong>${{ pinfo.price }}</strong></p>
+            {% endif %}
+            <p class="text-muted">All prices include VAT.</p>
+            <button type="button" class="btn btn-warning btn-lg btn-block" id="add-cart" value="{{ pinfo.id }}">Add to Cart</button>
+            <button class="btn btn-primary btn-lg btn-block">Buy Now</button>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).on('click', '#add-cart', function(e) {
+        e.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: '{% url "cart_add" %}',
+            data: {
+                'productid': $(this).val(), // Ensure productid matches the view's expectation
+                'csrfmiddlewaretoken': '{{ csrf_token }}',
+                'action': 'POST'
+            },
+            success: function(json) {
+                console.log(json);
+            },
+            error: function(xhr, errmsg, err) {
+                console.log(errmsg);
+            }
+        });
+    });
+</script>
+{% endblock %}
